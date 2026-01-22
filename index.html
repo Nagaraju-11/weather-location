@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+        }
+
+        .container {
+            background: #fff;
+            width: 400px;
+            margin: 20px auto;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 17px;
+        }
+
+        #location-input {
+            width: 70%;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        #btn {
+            background-color: #36d1dc;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #weather-img {
+            max-width: 100px;
+        }
+
+        #temp-deg {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #units {
+            font-size: 18px;
+        }
+
+        #grade {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="title">Weather App</p>
+        <div id="input">
+            <input type="text" placeholder="Location...." id="location-input">
+            <input type="button" value="Get" id="btn">
+        </div>
+        <div class="info">
+            <img src="https://static.thenounproject.com/png/1614694-200.png" alt="weather-img" id="weather-img">
+            <div class="weather-temp">
+                <span id="temp-deg">25</span><span id="units">&#176;</span><span id="grade">C</span>
+            </div>
+            <div id="weather-desc">Cloudy</div>
+            <div id="weather-location">Hyderabad</div>
+        </div>
+    </div>
+    <script>
+        let inputEle = document.getElementById("location-input");
+        let temp = document.getElementById("temp-deg");
+        let des = document.getElementById("weather-desc");
+        let locationElement = document.getElementById("weather-location");
+        let weatherImage = document.getElementById("weather-img");
+        let btn = document.getElementById("btn");
+        const apiKey = "5a4760c4c15c000d299b2d825be6360f";
+
+        btn.onclick = function() {
+            if (inputEle.value == "") {
+                alert("Please enter the location name");
+            } else {
+                const loc = inputEle.value;
+                let url = `https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=${apiKey}&units=metric`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        // Update your HTML elements with data here
+                        temp.innerHTML = data.main.temp.toFixed(1);
+                        des.innerHTML = data.weather[0].description;
+                        locationElement.innerHTML = data.name;
+                    })
+                    .catch(error => {
+                        console.error("Error fetching weather data:", error);
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
