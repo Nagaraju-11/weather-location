@@ -117,6 +117,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         temp.innerHTML = data.main.temp.toFixed(1);
                         des.innerHTML = data.weather[0].description;
                         locationElement.innerHTML = data.name;
+
+                        // --- GTM Data Layer Push Start ---
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'weather_search_success',
+                    'search_location': data.name,
+                    'search_temp': data.main.temp,
+                    'search_desc': data.weather[0].description
+                });
+                // --- GTM Data Layer Push End ---
                     })
                     .catch(error => {
                         console.error("Error fetching weather data:", error);
